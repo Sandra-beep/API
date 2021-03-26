@@ -22,7 +22,7 @@ class User {
         $stm ->bindParam(":email_IN", $email_IN);
 
             if( !$stm -> execute() ){
-                echo "Kunde inte köra sql frågan!";
+                echo "Kunde inte köra sql-frågan!";
                 die();
             }
         //Checkar om det finns en användare registrerad, genom att räkna raderna i tabellen i databasen
@@ -32,7 +32,11 @@ class User {
                 die();
             }
 
-        }else{
+            echo $username_IN . "<br>" . $email_IN;
+
+
+        } else {
+
 
         }
 }

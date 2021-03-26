@@ -3,6 +3,6 @@
     include("UserClass.php");
 
     $user = new User($pdo);
-    // $user->CreateUser("asd", "email", "password");
+    $user->CreateUser("Sandra", "sandra@gmail.com", "Sandra");
 
 ?>
