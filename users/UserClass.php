@@ -1,8 +1,6 @@
 <?php
 
-// A class's:
-//Variable = properties/egenskaper
-//Function = method/metod
+// A class's: Variable = properties/egenskaper. Function = method/metod.
 
 class User {
 
@@ -17,9 +15,9 @@ class User {
 
     function __construct( $pdo ){
         $this->database_connection = $pdo;
-    }
+     }
 
-    // Kollar först om det har skickats in nånting
+     // Kollar först om det har skickats in nånting
     function CreateNewUser( $username_IN, $email_IN, $password_IN ){
         if ( !empty( $username_IN ) && !empty( $email_IN && !empty( $password_IN ) ) ) {
         
@@ -37,13 +35,13 @@ class User {
             if( $numberOfRows > 0 ){
                 echo "Användare är redan registrerad!";
                 die();
-            }
+            } //Om den inte är registrerad så läggs den till i tabellen users
 
                 $sql = "INSERT INTO users (Username, Email, Password, Role) VALUES(:username_IN, :email_IN, :password_IN, 'user')";
                 $stm = $this->database_connection->prepare($sql);
-                $stm ->bindParam(":username_IN", $username_IN);
-                $stm ->bindParam(":email_IN", $email_IN);
-                $stm ->bindParam(":password_IN", $password_IN);
+                $stm->bindParam(":username_IN", $username_IN);
+                $stm->bindParam(":email_IN", $email_IN);
+                $stm->bindParam(":password_IN", $password_IN);
 
                 // Om man inte lyckas lägga in användare rätt så visas echot
                 if( !$stm->execute() ){
@@ -61,11 +59,11 @@ class User {
             echo "Alla argument behöver ett värde!";
             die();
         }
-    }
+     }
 
     function GetAllUsers(){
-            $sql = "SELECT Username, Email, Password FROM users";
-            $stm = $this -> database_connection->prepare($sql);
+            $sql = "SELECT * FROM users";
+            $stm = $this->database_connection->prepare($sql);
             $stm -> execute();
             return $stm -> fetchAll();
         }
@@ -79,19 +77,19 @@ class User {
             //Om den inte executar eller hittar någon användare när den räknar raderna
             if( !$stm->execute() || $stm->rowCount() < 1 ) {
                 echo "Användare existerar inte!";
-                return $stm -> fetch();
+                return $stm->fetch();
                 die();
             }
     
             $row = $stm->fetch();
-    
+            
+            $this->userID = $row['ID'];
             $this->username = $row['Username'];
             $this->email = $row['Email'];
             $this->password = $row['Password'];
-            $this->userID = $row['ID'];
             
             return $row;
-    
+
         }
 
         
@@ -132,9 +130,7 @@ class User {
         }
 
         return $error; //kopplas till New Std rad 104 så det blir samma error meddelande?
-    }
-
-
+         }
     function UpdateUsername( $userID, $username ){
         $sql = "UPDATE users SET Username=:username_IN WHERE ID=:userID_IN";
         $stm = $this->database_connection->prepare($sql);
@@ -145,7 +141,7 @@ class User {
             if( !$stm->rowCount() < 1){
                 return "Ingen användare med ID = $userID hittades!";
             }
-    }
+        }
 
     function UpdatePassword( $userID, $password ){
         $sql = "UPDATE users SET Password=:password_IN WHERE ID=:userID_IN";
@@ -169,22 +165,35 @@ class User {
         if( !$stm->rowCount() < 1) {
             return "Ingen användare med ID = $userID hittades!";
         }
-    }
+     }
 
     function UpdateRole($userID, $role){
         $sql = "UPDATE users SET Role=:role_IN WHERE ID=:userID_IN";
         $stm = $this->database_connection->prepare($sql);
-        $stm ->bindParam(":userID_IN", $useriD_IN);
+        $stm ->bindParam(":userID_IN", $userID_IN);
         $stm ->bindParam(":role_IN", $role);
         $stm ->execute();
 
         if( !$stm->rowCount() < 1){
             return "Ingen användare med ID=$userID hittades!";
         }
-    }
+     }
+    
+    
+    function LoginUser($username_IN, $password_IN){
+        $sql = "SELECT ID, Username, Email, Role FROM users WHERE username=:username_IN AND Password=:password_IN";
+        $stm = $this->database_connection->prepare($sql);
+        $stm->bindParam("username_IN", $username_IN);
+        $stm->bindParam("password_IN", $password_IN);
+        $stm->execute();
+        
+        echo $stm->rowCount();
+        }
 
 
 
+    
+    function CreateNewToken(){}
 
 
 
