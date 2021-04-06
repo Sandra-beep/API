@@ -33,11 +33,15 @@ class Cart {
             echo "Gick inte ta bort produkt - försök igen!";
             }
         }
-    }
 
 
 
     function Checkout (){
 
+        }
+
     }
-}
+
+
+
+    

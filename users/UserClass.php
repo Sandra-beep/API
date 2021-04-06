@@ -19,6 +19,7 @@ class User {
 
      // Kollar först om det har skickats in nånting
     function CreateNewUser( $username, $email, $password ){
+        
         if ( !empty( $username ) && !empty( $email && !empty( $password ) ) ) {
         
             $sql = "SELECT ID FROM users WHERE Username=:username_IN OR Email=:email_IN";
@@ -56,7 +57,7 @@ class User {
             "Användarnamn: $this->username <br> " . "Email: $this->email";
 
         } else {
-            echo "Alla argument behöver ett värde!";
+            echo "Antingen username, email eller password behöver ett värde!";
             die();
         }
      }

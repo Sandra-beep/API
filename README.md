@@ -12,9 +12,13 @@ If it is a class, it starts with a big letter, ex:
 class User
 
 Methods/functions
-If it a method/function in a class, I user bigger camel case, ex:
+If it a method/function in a class, I user big camelcase, ex:
 CreateUser
 
 Variables
-In the cases that I create a variable, I use normally the same camelcase for variables as , ex
+In the cases that I create a variable, I use normally the same camelcase for variables as , ex:
 $userID(variable in VS code) and userID(name of column in database)
+
+Titles of php-files
+The titles of the php-files in the project are written in small camelcase, ex:
+getOneUser or getAll
