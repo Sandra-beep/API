@@ -3,6 +3,10 @@
 class Product {
 
     private $database_connection;
+    private $productID;
+    private $title;
+    private $description;
+    private $price;
 
     function __construct ($pdo){
         $this->database_connection = $pdo;
@@ -10,7 +14,7 @@ class Product {
 
     function CreateProduct ($title, $description, $price){
 
-        $sql = "INSERT INTO product (Title, Description, Price) VALUES(:title_IN, :description_IN, :price_IN)";
+        $sql = "INSERT INTO products (Title, Description, Price) VALUES(:title_IN, :description_IN, :price_IN)";
         $stm = $this->database_connection->prepare( $sql );
         $stm-> bindParam( "title_IN", $title );
         $stm-> bindParam( "description_IN", $description );
@@ -22,10 +26,9 @@ class Product {
             $message->message = "Produkten skapades!"; //räcker med ett echo?
             $message->productID = $this->database_connection->lastInsertId();
         }else{
-            $message->message = "Kunde inte skapa produkten, testa igen!";
-            // $message->code = ""; /behöver inte kod för error
+            $message->message = "Kunde inte skapa produkten - testa igen!";
         }
-        
+    
         return $message;
 
     }
@@ -34,7 +37,9 @@ class Product {
         $sql = "SELECT * FROM products";
         $stm = $this->database_connection->prepare($sql);
         $stm->execute();
-        return $stm->fetchAll(); //hoppar över json_encode
+        echo '<pre>';
+        print_r ($stm->fetchAll()); //hoppar över json_encode
+        echo '</pre>';
     }
 
     function GetOneProduct($productId){
@@ -45,7 +50,7 @@ class Product {
         if($stm->execute()){
             return $stm->fetch();
         }else{
-            echo "Kunde inte hämta en produkt, försök igen!";
+            echo "Kunde inte hämta en produkt - försök igen!";
         }
     }
 

@@ -6,7 +6,9 @@
     $username = $_GET ['username'];
     $password = $_GET ['password'];
 
-    //Skriv i URL-fältet: http://localhost/API-1//Users/loginUser.php?username=Sandra&password=sandra
+    //Skriv i URL-fältet:
+    //localhost/API-1//Users/loginUser.php?username=Sandra&password=sandra
+    
     $userID = new User($pdo);
     $userID->LoginUser($username, $password);
     $return->$userID->LoginUser($username, $password);

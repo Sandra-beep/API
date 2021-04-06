@@ -3,7 +3,8 @@
 include("../db.php");
 include("productClass.php");
 
-// I URLen: localhost/API-1/Users/createProduct.php?title=Prada&description=shoes&price=5000kr
+// Bytt efter title=, description= och price= i URLen för att skapa en produkt: 
+// localhost/API-1/Products/createProduct.php?title=Prada&description=shoes&price=5000kr
 
 
 // Om titeln är tom så visar den error meddelande
@@ -27,4 +28,4 @@ if( empty($_GET['price']) ){
 
 // Lägger till en ny produkt, genom att lägga till i tabellen?
 $product = new Product($pdo);
-print_r($product->CreateProduct($_GET['title'], $_GET['description'], $_GET['price'])); 
+$product->CreateProduct($_GET['title'], $_GET['description'], $_GET['price']); 

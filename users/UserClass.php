@@ -8,7 +8,7 @@ class User {
     private $userID;
     private $username;
     private $email;
-    private $token;
+    private $password;
 
     // En metod som laddar databasen till variablen $this
     //__construct, för att databasen ska acceptera in data varje gång ett nytt objekt skapas 
@@ -34,7 +34,7 @@ class User {
         //Checkar om det finns en användare registrerade, genom att räkna raderna/användarna i tabellen i databasen
         $numberOfRows = $stm->rowCount();
             if( $numberOfRows > 0 ){
-                echo "Användare är redan registrerad!";
+                echo "Användare är redan registrerad - försök med ny info!";
                 die();
             } //Om den inte är registrerad så läggs den till i tabellen users
 
@@ -53,8 +53,9 @@ class User {
             $this->username = $username;
             $this->email = $email;
 
-            echo 
+            echo "<pre>";
             "Användarnamn: $this->username <br> " . "Email: $this->email";
+            echo"<pre>";
 
         } else {
             echo "Antingen username, email eller password behöver ett värde!";
@@ -188,12 +189,14 @@ class User {
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam("username_IN", $username);
         $stm->bindParam("password_IN", $password);
+        // $stm->execute(); //Behövs denna för att funka?
+
         
         //Om användaren skriver rätt, 1 true 0 false
         if( $stm->rowCount() == 1){
             $row = $stm->fetch();
-            echo "User-ID :" . $row['id'] . " - " . $row['username']; 
-            //funkar det såhär om jag skriver små bokstäver?
+            echo "User-ID :" . $row['ID'] . "<br>Username: " . $row['Username']; 
+            //funkar det om jag skriver små bokstäver?
             }
         }
     
