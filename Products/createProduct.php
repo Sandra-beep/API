@@ -3,6 +3,9 @@
 include("../db.php");
 include("productClass.php");
 
+// I URLen: localhost/API-1/Users/createProduct.php?title=Prada&description=shoes&price=5000kr
+
+
 // Om titeln är tom så visar den error meddelande
 if( empty($_GET['title']) ){ //stor bokstav som i tabell eller när man skriver i URL??
     $error = "En produkt behöver en titel!";

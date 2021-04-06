@@ -3,11 +3,10 @@
 include("../db.php");
 include("productClass.php");
 
-if( empty($_GET['id']) ){
-    $error = "Specificera ett ID!";
-    print_r($error);
+if( empty($_GET['productid']) ){
+    echo "Specificera ett produkt-ID!";
     die();
 }
 
 $product = new Product( $pdo );
-echo $product->DeleteProduct($_GET['id']); //ID eller id???
+echo $product->DeleteProduct($_GET['productid']); //id efter hur du skriver i URLen

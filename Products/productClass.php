@@ -19,7 +19,7 @@ class Product {
         // $message = new stdClass();//behöver inte meddelande class
 
         if( $stm->execute() ){
-            $message->message = "Produkten skapades!";
+            $message->message = "Produkten skapades!"; //räcker med ett echo?
             $message->productID = $this->database_connection->lastInsertId();
         }else{
             $message->message = "Kunde inte skapa produkten, testa igen!";
@@ -59,7 +59,7 @@ class Product {
         }
     }
 
-    //argumenten inne paranteser lämnas tomma för att kunna byta av användare
+    //argumenten inne paranteser lämnas tomma för att kunna bytas av användare
     function UpdateProduct($productId, $title="", $description="", $price=""){
 
         // Om de är inte tomma så visar befintlig information
