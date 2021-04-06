@@ -3,6 +3,6 @@
     include("UserClass.php");
 
     $user = new User($pdo);
-    $user->GetAllUsers();
+    print_r($user->GetAllUsers());
 
 ?>

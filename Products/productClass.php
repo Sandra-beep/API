@@ -37,7 +37,7 @@ class Product {
         return $stm->fetchAll(); //hoppar över json_encode
     }
 
-    function GetOneProduct($id){
+    function GetOneProduct($productId){
         $sql = "SELECT * FROM products WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam(":id_IN", $productId);
@@ -55,13 +55,14 @@ class Product {
         $stm->bindParam(":id_IN", $productId);
 
         if($stm->execute){
-            $message->message = "Du har tagit bort produkten!";
-            return $message; //ska man ha något istället för json_encode
+            echo "Produkten är borttagen!";
         }
     }
 
+    //argumenten inne paranteser lämnas tomma för att kunna byta av användare
     function UpdateProduct($productId, $title="", $description="", $price=""){
 
+        // Om de är inte tomma så visar befintlig information
         if( !empty( $title ) ){
             $this->updateTitle($productId, $title);
         }
@@ -75,6 +76,7 @@ class Product {
         }
     }
 
+    // Uppdaterar produktens titel
     private function updateTitle( $productId, $title ){
         $sql = "UPDATE products SET Title=:title_IN WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
@@ -82,7 +84,7 @@ class Product {
         $stm->bindParam( "$title_IN", $title );
         $stm->execute();
     }
-
+    // Uppdaterar produktens beskrivning
     private function updateDescription( $productId, $description ){
         $sql = "UPDATE products SET Description=:description_IN WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
@@ -90,7 +92,7 @@ class Product {
         $stm->bindParam( "$description_IN", $description );
         $stm->execute(); 
     }
-
+    // Uppdaterar produktens pris
     private function updatePrice( $productId, $price ){
         $sql = "UPDATE products SET Price=:price_IN WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
@@ -99,7 +101,8 @@ class Product {
         $stm->execute(); 
     }
 
-    function SearchProduct ( $word ){
+    // Leta efter en produkt
+    function SearchProduct ( $word ){ //är word definerad, eller blir det när man skriver i URL?
         $sql = "SELECT * FROM products WHERE Title LIKE :word_IN OR Description LIKE :word_IN";
         $stm = $this->database_connection->prepare( $sql );
         $word = '%' . $word . '%';
