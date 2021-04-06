@@ -18,13 +18,13 @@ class User {
      }
 
      // Kollar först om det har skickats in nånting
-    function CreateNewUser( $username_IN, $email_IN, $password_IN ){
-        if ( !empty( $username_IN ) && !empty( $email_IN && !empty( $password_IN ) ) ) {
+    function CreateNewUser( $username, $email, $password ){
+        if ( !empty( $username ) && !empty( $email && !empty( $password ) ) ) {
         
             $sql = "SELECT ID FROM users WHERE Username=:username_IN OR Email=:email_IN";
             $stm = $this->database_connection->prepare($sql);
-            $stm-> bindParam(":username_IN", $username_IN);
-            $stm-> bindParam(":email_IN", $email_IN);
+            $stm-> bindParam(":username_IN", $username);
+            $stm-> bindParam(":email_IN", $email);
 
             if( !$stm -> execute() ){
                 echo "Kunde inte köra sql-frågan!";
@@ -39,9 +39,9 @@ class User {
 
                 $sql = "INSERT INTO users (Username, Email, Password, Role) VALUES(:username_IN, :email_IN, :password_IN, 'user')";
                 $stm = $this->database_connection->prepare($sql);
-                $stm-> bindParam(":username_IN", $username_IN);
-                $stm-> bindParam(":email_IN", $email_IN);
-                $stm-> bindParam(":password_IN", $password_IN);
+                $stm-> bindParam(":username_IN", $username);
+                $stm-> bindParam(":email_IN", $email);
+                $stm-> bindParam(":password_IN", $password);
 
                 // Om man inte lyckas lägga in användare rätt så visas echot
                 if( !$stm->execute() ){
@@ -49,11 +49,11 @@ class User {
                     die();
                 }
 
-            $this->username = $username_IN;
-            $this->email = $email_IN;
+            $this->username = $username;
+            $this->email = $email;
 
             echo 
-            "Användarnamn: $this->username_IN <br> " . "Email: $this->email_IN";
+            "Användarnamn: $this->username <br> " . "Email: $this->email";
 
         } else {
             echo "Alla argument behöver ett värde!";
@@ -79,7 +79,7 @@ class User {
                 echo "Användare existerar inte!";
                 return $stm->fetch();
                 die();
-            }
+            } 
     
             $row = $stm->fetch();
             
@@ -101,9 +101,9 @@ class User {
     
             // $message = new stdClass(); // ny stdClass?
             if($stm->rowCount() > 0) {
-                echo "Användare med ID $userID blev borttagen!";
+                echo "Användare med user-ID $userID blev borttagen!";
             } else { 
-                echo "Ingen användare med ID=$userID hittades!";
+                echo "Ingen användare med User-ID=$userID hittades!";
             }
         }
 
@@ -122,16 +122,18 @@ class User {
             echo $this->UpdatePassword($userID, $password);
         }
 
-        //Lägg till OM Role == "admin"?
+        //if (isset($_SESSION[’Role’]) && $_SESSION [’Role’] == ”admin”)){
+
         // if( !empty($role) ){
         //     echo $this->UpdateRole($userID, $role);
-            }
+        //     }
+        // }
         
 
     function UpdateUsername( $userID, $username ){
         $sql = "UPDATE users SET Username=:username_IN WHERE ID=:userID_IN";
         $stm = $this->database_connection->prepare($sql);
-        $stm ->bindParam(":username_IN", $username_IN);
+        $stm ->bindParam(":username_IN", $username);
         $stm ->bindParam(":userID_IN", $userID);
         $stm ->execute();
 
@@ -144,7 +146,7 @@ class User {
         $sql = "UPDATE users SET Password=:password_IN WHERE ID=:userID_IN";
         $stm = $this->database_connection->prepare($sql);
         $stm ->bindParam(":userID_IN", $userID);
-        $stm ->bindParam(":password_IN", $password_IN);
+        $stm ->bindParam(":password_IN", $password);
         $stm ->execute();
     
             if( !$stm->rowCount() < 1) {
@@ -156,7 +158,7 @@ class User {
         $sql = "UPDATE users SET Email=:username_IN WHERE ID=:userID_IN";
         $stm = $this->database_connection->prepare($sql);
         $stm ->bindParam(":userID_IN", $userID);
-        $stm ->bindParam(":email_IN", $email_IN);
+        $stm ->bindParam(":email_IN", $email);
         $stm ->execute();
 
         if( !$stm->rowCount() < 1) {
@@ -176,29 +178,26 @@ class User {
         }
      }
     
-    
-    function LoginUser($username_IN, $password_IN){
+    function LoginUser($username, $password){
+
+        $username = $_GET['username'];
+        $password = $_GET['password'];
+
         $sql = "SELECT ID, Username, Email FROM users WHERE username=:username_IN AND Password=:password_IN";
-        $stm = $this->database_connection->prepare( $sql) ;
-        $stm->bindParam("username_IN", $username_IN);
-        $stm->bindParam("password_IN", $password_IN);
-        $stm->execute();
+        $stm = $this->database_connection->prepare( $sql );
+        $stm->bindParam("username_IN", $username);
+        $stm->bindParam("password_IN", $password);
         
         //Om användaren skriver rätt, 1 true 0 false
         if( $stm->rowCount() == 1){
-            $row=$stm->fetch();
-            return $row['id'] . $row['username']; //funkar det såhär om jag skippar token?
+            $row = $stm->fetch();
+            echo "User-ID :" . $row['id'] . " - " . $row['username']; 
+            //funkar det såhär om jag skriver små bokstäver?
             }
         }
-
-
-
     
     // function CreateNewToken(){}
 
-
-
-
+    }
 }
-
 ?>

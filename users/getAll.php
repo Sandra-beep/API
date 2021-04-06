@@ -2,7 +2,10 @@
     include("../db.php");
     include("UserClass.php");
 
-    $user = new User($pdo);
-    print_r($user->GetAllUsers());
+    $userID = new User($pdo);
+    echo "<h3>Alla registrerade i databasen:</h3>";
+    echo '<pre>';
+    print_r($userID->GetAllUsers());
+    echo '</pre>';
 
 ?>

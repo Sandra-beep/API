@@ -10,7 +10,7 @@ class Cart {
         $this->database_connection = $pdo;
     }
 
-    function CreateCart ($userID, $cartID){
+    function CreateCart ($userID, $cartID){//Behövs userid?
         $stm = $pdo->prepare('INSERT INTO carts (userID, productID) VALUES(:userId_IN,:productId_IN');
         $stm->bindParam(':userId_IN', $_GET['userid']); //länkar userID
         $stm->bindParam(':productId_IN', $_GET['productid']); //länkar productID   
@@ -22,8 +22,20 @@ class Cart {
         }
     }
 
-    function removeFromCart($cartID, $productID){}
-    
+    function removeFromCart($userID, $productID){
+        $stm = $pdo->prepare('DELETE FROM carts (userID, productID) VALUES(:userId_IN,:productId_IN');
+        $stm->bindParam(':userId_IN', $_GET['userid']); //länkar userID
+        $stm->bindParam(':productId_IN', $_GET['productid']); //länkar productID   
+        
+        if($stm->execute()){
+            echo "Produkten borttagen ur varukorg!";
+        } else {
+            echo "Gick inte ta bort produkt - försök igen!";
+            }
+        }
+    }
+
+
 
     function Checkout (){
 

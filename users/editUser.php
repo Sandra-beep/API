@@ -10,10 +10,10 @@
     // $role = ""; Bara admin ska kunna ändra roll
 
     // Om users ID är satt så går den vidare och ändrar resten?
-    if(isset($_GET['id'])){
-        $id = $_GET['id'];
+    if(isset($_GET['userid'])){
+        $id = $_GET['userid'];
     }else {
-        echo "Du har ej angett (rätt) ID!";
+        echo "Du har ej angett (rätt) User-ID!";
         die();
     }
 
@@ -35,8 +35,8 @@
     //     $role = $_GET['role'];
     // }
 
-    $user = new User($pdo);
+    $userID = new User($pdo);
     // Behövs print_r eller fetch här?
-    echo $user->editUser($id, $username, $password, $email);
+    echo $userID->editUser($userID, $username, $password, $email);
 
 ?>
