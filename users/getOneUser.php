@@ -4,4 +4,12 @@ include("UserClass.php");
 
 $user = new User($pdo);
 
-$user->GetOneUser();
+// Om den inte är tom så hämtar den användare
+if( !empty($_GET['id']) ){
+$user->GetOneUser($_GET['id']);
+//print_r eller fetch här?
+
+}else{
+    echo "Inget ID är specificerat!";
+    die();
+}

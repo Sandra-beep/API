@@ -23,8 +23,8 @@ class User {
         
             $sql = "SELECT ID FROM users WHERE Username=:username_IN OR Email=:email_IN";
             $stm = $this->database_connection->prepare($sql);
-            $stm ->bindParam(":username_IN", $username_IN);
-            $stm ->bindParam(":email_IN", $email_IN);
+            $stm-> bindParam(":username_IN", $username_IN);
+            $stm-> bindParam(":email_IN", $email_IN);
 
             if( !$stm -> execute() ){
                 echo "Kunde inte köra sql-frågan!";
@@ -39,9 +39,9 @@ class User {
 
                 $sql = "INSERT INTO users (Username, Email, Password, Role) VALUES(:username_IN, :email_IN, :password_IN, 'user')";
                 $stm = $this->database_connection->prepare($sql);
-                $stm->bindParam(":username_IN", $username_IN);
-                $stm->bindParam(":email_IN", $email_IN);
-                $stm->bindParam(":password_IN", $password_IN);
+                $stm-> bindParam(":username_IN", $username_IN);
+                $stm-> bindParam(":email_IN", $email_IN);
+                $stm-> bindParam(":password_IN", $password_IN);
 
                 // Om man inte lyckas lägga in användare rätt så visas echot
                 if( !$stm->execute() ){
@@ -99,38 +99,35 @@ class User {
             $stm->bindParam(":userID_IN", $userID);
             $stm->execute();
     
-            $message = new stdClass(); // new stdClass?
+            // $message = new stdClass(); // ny stdClass?
             if($stm->rowCount() > 0) {
-                $message->text = "Användare med ID $userID blev borttagen!";
-                return $message;
+                echo "Användare med ID $userID blev borttagen!";
             } else { 
-                $message->text = "Ingen användare med ID=$userID hittades!";
-                return $message;
+                echo "Ingen användare med ID=$userID hittades!";
             }
-    
         }
 
 
     function EditUser($userID, $username = "", $password = "", $email = "", $role = ""){
 
         if( !empty($username) ){
-            $error->message = $this->UpdateUsername($userID, $username);
+            echo $this->UpdateUsername($userID, $username);
         }
 
         if( !empty($email) ){
-            $error->message = $this->UpdateEmail($userID, $email);
+            echo $this->UpdateEmail($userID, $email);
         }
 
         if( !empty($password) ){
-            $error->message = $this->UpdatePassword($userID, $password);
+            echo $this->UpdatePassword($userID, $password);
         }
 
-        if( !empty($role) ){
-            $error->message = $this->UpdateRole($userID, $role);
-        }
+        //Lägg till OM Role == "admin"?
+        // if( !empty($role) ){
+        //     echo $this->UpdateRole($userID, $role);
+            }
+        
 
-        return $error; //kopplas till New Std rad 104 så det blir samma error meddelande?
-         }
     function UpdateUsername( $userID, $username ){
         $sql = "UPDATE users SET Username=:username_IN WHERE ID=:userID_IN";
         $stm = $this->database_connection->prepare($sql);
@@ -181,19 +178,23 @@ class User {
     
     
     function LoginUser($username_IN, $password_IN){
-        $sql = "SELECT ID, Username, Email, Role FROM users WHERE username=:username_IN AND Password=:password_IN";
-        $stm = $this->database_connection->prepare($sql);
+        $sql = "SELECT ID, Username, Email FROM users WHERE username=:username_IN AND Password=:password_IN";
+        $stm = $this->database_connection->prepare( $sql) ;
         $stm->bindParam("username_IN", $username_IN);
         $stm->bindParam("password_IN", $password_IN);
         $stm->execute();
         
-        echo $stm->rowCount();
+        //Om användaren skriver rätt, 1 true 0 false
+        if( $stm->rowCount() == 1){
+            $row=$stm->fetch();
+            return $row['id'] . $row['username']; //funkar det såhär om jag skippar token?
+            }
         }
 
 
 
     
-    function CreateNewToken(){}
+    // function CreateNewToken(){}
 
 
 

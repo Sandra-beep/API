@@ -16,14 +16,14 @@ class Product {
         $stm-> bindParam( "description_IN", $description );
         $stm-> bindParam( "price_IN", $price );
 
-        $message = new stdClass();//vad gör den här?
+        // $message = new stdClass();//behöver inte meddelande class
 
         if( $stm->execute() ){
-            $msg->message = "Produkten skapades!";
+            $message->message = "Produkten skapades!";
             $message->productID = $this->database_connection->lastInsertId();
         }else{
             $message->message = "Kunde inte skapa produkten, testa igen!";
-            // $message->code = "";
+            // $message->code = ""; /behöver inte kod för error
         }
         
         return $message;
@@ -34,10 +34,10 @@ class Product {
         $sql = "SELECT * FROM products";
         $stm = $this->database_connection->prepare($sql);
         $stm->execute();
-        return $stm->fetchAll();
+        return $stm->fetchAll(); //hoppar över json_encode
     }
 
-    function GetOneProduct(){
+    function GetOneProduct($id){
         $sql = "SELECT * FROM products WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam(":id_IN", $productId);
