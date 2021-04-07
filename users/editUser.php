@@ -1,7 +1,7 @@
 <?php
 
 //Skriv i URL fältet så att jag kan ändra:
-//
+//http://localhost/API-1/Users/editUser.php?userid=1&username=Sandrita
     include("../db.php");
     include("UserClass.php");
 
@@ -41,8 +41,8 @@
     //     $role = $_GET['role'];
     // }
 
-    $userID = new User($pdo);
+    $userData = new User($pdo);
     // Behövs print_r eller fetch här?
-    print_r($userID->editUser($userID, $username, $password, $email));
+    print_r($userData->editUser($userID, $username, $password, $email));
 
 ?>

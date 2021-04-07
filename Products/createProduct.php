@@ -6,11 +6,16 @@ include("productClass.php");
 // Bytt efter title=, description= och price= i URLen för att skapa en produkt: 
 // localhost/API-1/Products/createProduct.php?title=Prada&description=shoes&price=5000kr
 
+if( empty($_GET['userid']) ){ //stor bokstav som i tabell eller när man skriver i URL??
+    $error = "En produkt behöver en user ID!";
+    print_r($error); //vrf json_encode? för att ta bort extra array-delen. Funkar print_r? Räcker med echo? JA och JA
+    die();
+}
 
 // Om titeln är tom så visar den error meddelande
 if( empty($_GET['title']) ){ //stor bokstav som i tabell eller när man skriver i URL??
     $error = "En produkt behöver en titel!";
-    print_r($error); //vrf json_encode? Funkar print_r? Räcker med echo?
+    print_r($error); //vrf json_encode? för att ta bort extra array-delen. Funkar print_r? Räcker med echo? JA och JA
     die();
 }
 // Om beskrivningen är tom så visar den error meddelande
@@ -28,4 +33,4 @@ if( empty($_GET['price']) ){
 
 // Lägger till en ny produkt, genom att lägga till i tabellen?
 $product = new Product($pdo);
-$product->CreateProduct($_GET['title'], $_GET['description'], $_GET['price']); 
+$product->CreateProduct($_GET['userid'], $_GET['title'], $_GET['description'], $_GET['price']); 

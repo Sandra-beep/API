@@ -31,9 +31,9 @@ class User {
                 echo "Kunde inte köra sql-frågan!";
                 die();
             }
-        //Checkar om det finns en användare registrerade, genom att räkna raderna/användarna i tabellen i databasen
-        $numberOfRows = $stm->rowCount();
-            if( $numberOfRows > 0 ){
+        //Checkar om det finns en användare registrera, genom att räkna raderna/användarna i tabellen i databasen
+        $rows = $stm->rowCount();
+            if( $rows > 0 ){
                 echo "Användare är redan registrerad - försök med ny info!";
                 die();
             } //Om den inte är registrerad så läggs den till i tabellen users
@@ -130,7 +130,7 @@ class User {
         //     echo $this->UpdateRole($userID, $role);
         //     }
         // }
-        
+    }
 
     function UpdateUsername( $userID, $username ){
         $sql = "UPDATE users SET Username=:username_IN WHERE ID=:userID_IN";
@@ -139,9 +139,12 @@ class User {
         $stm ->bindParam(":userID_IN", $userID);
         $stm ->execute();
 
+        echo "Ny username: " . $username;
+
             if( !$stm->rowCount() < 1){
                 return "Ingen användare med ID = $userID hittades!";
             }
+
         }
 
     function UpdatePassword( $userID, $password ){
@@ -182,33 +185,25 @@ class User {
     
     function LoginUser($username, $password){
 
-        $username = $_GET['username'];
-        $password = $_GET['password'];
-
-        // Kryptering av lösenord:
-        // $salt = "hejåhå235246369()/=/r6**";
-        // $password = md5($password.$salt);
-
-
 
         //---------------- Alternativ 1 ------------------
 
-        $sql = "SELECT ID FROM users WHERE username=:username_IN AND Password=:password_IN";
+        $sql = "SELECT ID, Username, Email FROM users WHERE username=:username_IN AND Password=:password_IN";
         $stm = $this->database_connection->prepare( $sql );
-        $stm->bindParam("username_IN", $username);
-        $stm->bindParam("password_IN", $password);
+        $stm->bindParam(":username_IN", $username);
+        $stm->bindParam(":password_IN", $password);
         $return = $stm->execute();
 
+        print_r ($return);
+        $row = $stm->fetch();
 
-        
         //Om rätt skrivet, så visas 1 true och är 0 false
-        if( $return->rowCount() == 1){
-            $row = $stm->fetch();
+        if($row[0] > 0){
             echo "Toppen du är inloggad! <br>" 
             . "User-ID :" . $row['ID'] 
             . "<br>Username: " . $row['Username']
             . "<br>Email: " . $row['Email']; 
-            //funkar det om jag skriver små bokstäver?
+            //row['']innanför brackets samma som column-namn
             }
 
 
@@ -232,5 +227,5 @@ class User {
     // function CreateNewToken(){}
 
     }
-}
+
 ?>

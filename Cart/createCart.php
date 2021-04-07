@@ -1,19 +1,12 @@
 <?php
 
-include('db.php');
-include('');
-
-
-if( $stm->execute() ){
-    echo "En beställning skapades!"; //räcker med ett echo?
-    echo $product = $this->database_connection->lastInsertId();
-}else{
-    echo "Kunde inte skapa en beställningen - försök igen!";
-}
-
 //Skapar en cart, skriv i URL
-//
+// http://localhost/API-1/Cart/createCart.php?userid=1&productid=1
+
+include('../db.php');
+include('cartClass.php');
+
 $cart = new Cart($pdo);
-print_r($cart->CreateCart($_GET['username'], $_GET['cartid'], $_GET['productid'], $_GET['title'], $_GET['description'], $_GET['price'])); 
+print_r($cart->CreateCart($_GET['userid'], $_GET['productid'])); //här är det som bestäms vad som ska in i URL:n
 
 //$_GET['username'] - Behövs den?

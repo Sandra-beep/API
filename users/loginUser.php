@@ -15,4 +15,4 @@ $password = $_GET ['password'];
 // $password = md5($password.$salt);
 
 $userID = new User($pdo);
-$userID->LoginUser($username, $password);
+print_r($userID->LoginUser($username, $password));

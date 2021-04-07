@@ -4,12 +4,13 @@ include("../db.php");
 include("productClass.php");
 
 // Om id till produkten är tom så kör den echo
-if (empty($_GET['id'])){
+if (empty($_GET['productid'])){
     echo "Ingen ID specificerad!";
     die();
 }
 
 
-
 $product = new Product( $pdo );
-print_r($product->GetOneProducts($_GET['id']));
+echo "<pre>";
+print_r(array_unique($product->GetOneProduct($_GET['productid'])));
+echo "</pre>";

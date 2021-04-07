@@ -12,32 +12,25 @@ class Product {
         $this->database_connection = $pdo;
     }
 
-    function CreateProduct ($title, $description, $price){
+    function CreateProduct ($userID, $title, $description, $price){
         
-        $userID = $_GET['userid'];
-        $title = $_GET['title'];
-        $description = $_GET['description'];
-        $price = $_GET['price'];
 
         $sql = "INSERT INTO products (userID, Title, Description, Price) VALUES(:userid_IN, :title_IN, :description_IN, :price_IN)";
         $stm = $this->database_connection->prepare( $sql );
-        $stm-> bindParam( "title_IN", $title );
-        $stm-> bindParam( "description_IN", $description );
-        $stm-> bindParam( "price_IN", $price );
-        $stm-> bindParam( "userid_IN", $userID );
+        $stm-> bindParam( ":title_IN", $title );
+        $stm-> bindParam( ":description_IN", $description );
+        $stm-> bindParam( ":price_IN", $price );
+        $stm-> bindParam( ":userid_IN", $userID );
 
 
         // $message = new stdClass();//behöver inte meddelande class
 
         if( $stm->execute() ){
-            $message->message = "Produkten skapades!"; //räcker med ett echo?
-            $message->productID = $this->database_connection->lastInsertId();
+            echo "Produkten skapades!" . $this->database_connection->lastInsertId(); //räcker med ett echo?
         }else{
             echo "Kunde inte skapa produkten - testa igen!";
         }
     
-        return $message;
-
     }
 
     function GetAllProducts(){
@@ -49,10 +42,10 @@ class Product {
         echo '</pre>';
     }
 
-    function GetOneProduct($productId){
+    function GetOneProduct($productID){
         $sql = "SELECT * FROM products WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
-        $stm->bindParam(":id_IN", $productId);
+        $stm->bindParam(":id_IN", $productID);
 
         if($stm->execute()){
             return $stm->fetch();
@@ -61,35 +54,40 @@ class Product {
         }
     }
 
-    function DeleteProduct($productId){
+    function DeleteProduct($productID){
         $sql = "DELETE FROM products WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
-        $stm->bindParam(":id_IN", $productId);
+        $stm->bindParam(":id_IN", $productID);
 
-        if($stm->execute){
+        if($stm->execute()){
             echo "Produkten är borttagen!";
         }
     }
 
     //argumenten inne paranteser lämnas tomma för att kunna bytas av användare
-    function UpdateProduct($productId, $title="", $description="", $price=""){
+    function UpdateProduct($productID, $title="", $description="", $price=""){
 
         // Om de är inte tomma så visar befintlig information
         if( !empty( $title ) ){
-            $this->updateTitle($productId, $title);
+            $this->updateTitle($productID, $title);
+            echo "Ny titel: " . $title;
         }
 
         if( !empty( $description ) ){
-            $this->updateDescription( $productId, $description );
+            $this->updateDescription( $productID, $description );
+            echo "Ny beskrivning: " . $description;
+
         }
 
         if( !empty( $price ) ){
-            $this->updateDescription( $productId, $price );
+            $this->updateDescription( $productID, $price );
+            echo "Nytt pris: " . $price;
+
         }
     }
 
     // Uppdaterar produktens titel
-    private function updateTitle( $productId, $title ){
+    private function updateTitle( $productID, $title ){
         $sql = "UPDATE products SET Title=:title_IN WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam( "$id_IN", $productID) ; //OK att den kommer före?
@@ -97,7 +95,7 @@ class Product {
         $stm->execute();
     }
     // Uppdaterar produktens beskrivning
-    private function updateDescription( $productId, $description ){
+    private function updateDescription( $productID, $description ){
         $sql = "UPDATE products SET Description=:description_IN WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam( "$id_IN", $productID) ;
@@ -105,7 +103,7 @@ class Product {
         $stm->execute(); 
     }
     // Uppdaterar produktens pris
-    private function updatePrice( $productId, $price ){
+    private function updatePrice( $productID, $price ){
         $sql = "UPDATE products SET Price=:price_IN WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam( "$id_IN", $productID) ;
@@ -119,7 +117,7 @@ class Product {
         $stm = $this->database_connection->prepare( $sql );
         $word = '%' . $word . '%';
         $stm->bindParam( "word_IN", $word );
-        $stm->execute;
+        $stm->execute();
         return $stm->fetchAll();
     }
 }

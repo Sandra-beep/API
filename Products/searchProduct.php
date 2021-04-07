@@ -9,4 +9,6 @@ if( empty($_GET['word']) ){ //vart kommer word ifrån?
 }
 
 $product = new Product($pdo);
-echo $product->SearchProduct($_GET['word']);
+echo "<pre>";
+print_r ($product->SearchProduct($_GET['word']));
+echo "</pre>";
