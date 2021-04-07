@@ -25,9 +25,9 @@ class Cart {
     }
 
     function RemoveFromCart($userID, $productID){
-        $stm = $pdo->prepare('DELETE FROM cart (userID, productID) VALUES(:userId_IN,:productId_IN');
-        $stm->bindParam(':userId_IN', $_GET['userid']); //länkar userID
-        $stm->bindParam(':productId_IN', $_GET['productid']); //länkar productID   
+        $stm = $pdo->prepare('DELETE FROM cart (userID, productID) VALUES(:userid_IN,:productid_IN');
+        $stm->bindParam(':userid_IN', $_GET['userid']); //länkar userID
+        $stm->bindParam(':productid_IN', $_GET['productid']); //länkar productID   
         
         if($stm->execute()){
             echo "Produkten borttagen ur varukorg!";
@@ -37,7 +37,8 @@ class Cart {
         }
 
 
-    function Checkout (){
+    function Checkout ($userid){
+
         $sql = "SELECT * FROM cart WHERE userID=:userid_IN";
         $stm = $this->database_connection->prepare($sql);
         $stm->bindParam(':userid_IN', $_GET['userid']); //länkar userID och vilka produkter som ligger på den
@@ -46,8 +47,6 @@ class Cart {
         print_r ($stm->fetchAll()); // json_encode
         echo '</pre>';
         }
-
-
 
     }
 

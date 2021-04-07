@@ -63,7 +63,7 @@ class Product {
         $stm->bindParam(":id_IN", $productID);
 
         if($stm->execute()){
-            echo "Produkten är borttagen!";
+            echo "Produkten med Produkt-ID $productID är borttagen!";
         }
     }
 

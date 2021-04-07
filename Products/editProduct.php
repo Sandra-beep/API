@@ -1,8 +1,7 @@
 <?php
 
-//Skriv i URL fältet så att jag kan ändra:
-//http://localhost/API-1/Products/editProduct.php?productid=1&username=Sandrita
-    include("../db.php");
+//Byt produktid-nr och title i URL fältet så det kan ändra:
+//localhost/API-1/Products/editProduct.php?productid=1&title=Armani    include("../db.php");
     include("productClass.php");
 
     // Lämnas tomma så att användare kan ändra
@@ -13,10 +12,10 @@
     
 
     // Om users ID är satt så går den vidare och ändrar resten?
-    if(isset($_GET['userid'])){
-        $userID = $_GET['userid'];
+    if(isset($_GET['productid'])){
+        $productID = $_GET['productid'];
     }else {
-        echo "Du har ej angett (rätt) User-ID!";
+        echo "Ange Produkt-ID!";
         die();
     }
 
@@ -33,6 +32,6 @@
     }
     
     $productData = new Product($pdo);
-    print_r(json_encode($productData->editProduct($productID, $title, $description, $price)));
+    print_r($productData->editProduct($productID, $title, $description, $price));
 
 ?>
