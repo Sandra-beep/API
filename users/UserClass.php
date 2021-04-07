@@ -185,17 +185,25 @@ class User {
         $username = $_GET['username'];
         $password = $_GET['password'];
 
-        $sql = "SELECT ID, Username, Email FROM users WHERE username=:username_IN AND Password=:password_IN";
+        // Kryptering av lösenord:
+        $salt = "hejåhå235246369()/=/r6**";
+        $password = md5($password.$salt);
+
+        $sql = "SELECT ID FROM users WHERE username=:username_IN AND Password=:password_IN";
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam("username_IN", $username);
         $stm->bindParam("password_IN", $password);
-        // $stm->execute(); //Behövs denna för att funka?
+        $return = $stm->execute();
+
 
         
-        //Om användaren skriver rätt, 1 true 0 false
-        if( $stm->rowCount() == 1){
+        //Om användaren skriver rätt, så är resultatet 1 true och är 0 false
+        if( $return->rowCount() == 1){
             $row = $stm->fetch();
-            echo "User-ID :" . $row['ID'] . "<br>Username: " . $row['Username']; 
+            echo "Välkommen <br>" 
+            . "User-ID :" . $row['ID'] 
+            . "<br>Username: " . $row['Username']
+            . "<br>Email: " . $row['Email']; 
             //funkar det om jag skriver små bokstäver?
             }
         }

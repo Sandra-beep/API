@@ -13,12 +13,19 @@ class Product {
     }
 
     function CreateProduct ($title, $description, $price){
+        
+        $userID = $_GET['userid'];
+        $title = $_GET['title'];
+        $description = $_GET['description'];
+        $price = $_GET['price'];
 
-        $sql = "INSERT INTO products (Title, Description, Price) VALUES(:title_IN, :description_IN, :price_IN)";
+        $sql = "INSERT INTO products (userID, Title, Description, Price) VALUES(:userid_IN, :title_IN, :description_IN, :price_IN)";
         $stm = $this->database_connection->prepare( $sql );
         $stm-> bindParam( "title_IN", $title );
         $stm-> bindParam( "description_IN", $description );
         $stm-> bindParam( "price_IN", $price );
+        $stm-> bindParam( "userid_IN", $userID );
+
 
         // $message = new stdClass();//behöver inte meddelande class
 
@@ -26,7 +33,7 @@ class Product {
             $message->message = "Produkten skapades!"; //räcker med ett echo?
             $message->productID = $this->database_connection->lastInsertId();
         }else{
-            $message->message = "Kunde inte skapa produkten - testa igen!";
+            echo "Kunde inte skapa produkten - testa igen!";
         }
     
         return $message;
