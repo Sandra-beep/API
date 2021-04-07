@@ -186,8 +186,12 @@ class User {
         $password = $_GET['password'];
 
         // Kryptering av lösenord:
-        $salt = "hejåhå235246369()/=/r6**";
-        $password = md5($password.$salt);
+        // $salt = "hejåhå235246369()/=/r6**";
+        // $password = md5($password.$salt);
+
+
+
+        //---------------- Alternativ 1 ------------------
 
         $sql = "SELECT ID FROM users WHERE username=:username_IN AND Password=:password_IN";
         $stm = $this->database_connection->prepare( $sql );
@@ -197,15 +201,32 @@ class User {
 
 
         
-        //Om användaren skriver rätt, så är resultatet 1 true och är 0 false
+        //Om rätt skrivet, så visas 1 true och är 0 false
         if( $return->rowCount() == 1){
             $row = $stm->fetch();
-            echo "Välkommen <br>" 
+            echo "Toppen du är inloggad! <br>" 
             . "User-ID :" . $row['ID'] 
             . "<br>Username: " . $row['Username']
             . "<br>Email: " . $row['Email']; 
             //funkar det om jag skriver små bokstäver?
             }
+
+
+
+
+
+        //---------------- Alternativ 2 ------------------
+
+            // $stm = $pdo->query('SELECT ID, Username, Email FROM users');
+
+            // while ($row = $stm->fetch()) {
+            //     echo "Toppen du är inloggad! <br>" 
+            // . "User-ID :" . $row['ID'] 
+            // . "<br>Username: " . $row['Username']
+            // . "<br>Email: " . $row['Email'];   
+            // }
+
+            
         }
     
     // function CreateNewToken(){}
