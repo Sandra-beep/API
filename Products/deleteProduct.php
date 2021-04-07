@@ -1,5 +1,7 @@
 <?php
 
+//localhost/API-1/Products/deleteProduct.php?userid=1&productid=9
+
 include("../db.php");
 include("productClass.php");
 

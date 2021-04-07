@@ -8,6 +8,7 @@
 
     $userID = new User($pdo);
     print_r($userID->CreateNewUser($_GET['username'], $_GET['email'], $_GET['password']));
+    // ['']= det som ska in i URL-fältet
 
     
     //Hårdkoda, byt värde i "" för att testa om det kommer in en ny användare:

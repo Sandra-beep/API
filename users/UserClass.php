@@ -110,7 +110,7 @@ class User {
         }
 
 
-    function EditUser($userID, $username = "", $password = "", $email = "", $role = ""){
+    function EditUser($userID, $username = "", $email = "", $password = "", $role = ""){
 
         if( !empty($username) ){
             echo $this->UpdateUsername($userID, $username);
@@ -135,41 +135,49 @@ class User {
     function UpdateUsername( $userID, $username ){
         $sql = "UPDATE users SET Username=:username_IN WHERE ID=:userID_IN";
         $stm = $this->database_connection->prepare($sql);
-        $stm ->bindParam(":username_IN", $username);
         $stm ->bindParam(":userID_IN", $userID);
-        $stm ->execute();
+        $stm ->bindParam(":username_IN", $username);
 
-        echo "Ny username: " . $username;
-
+         if($stm ->execute()){
+            echo "User-ID: $userID <br> Ny username: " . $username . "<br>";
+            die();
+         }
             if( !$stm->rowCount() < 1){
-                return "Ingen användare med ID = $userID hittades!";
+                echo "Ingen användare med ID = $userID hittades!";
             }
 
         }
 
-    function UpdatePassword( $userID, $password ){
+    function UpdateEmail($userID, $email){
+        $sql = "UPDATE users SET Email=:email_IN WHERE ID=:userID_IN";
+        $stm = $this->database_connection->prepare($sql);
+        $stm ->bindParam(":userID_IN", $userID);
+        $stm ->bindParam(":email_IN", $email);
+
+         if($stm ->execute()){
+            echo "User-ID: $userID <br> Ny email: " . $email . "<br>";
+            die();
+         }
+            if( !$stm->rowCount() < 1){
+                echo "Ingen användare med ID = $userID hittades!";
+            }
+
+        }
+
+     function UpdatePassword( $userID, $password ){
         $sql = "UPDATE users SET Password=:password_IN WHERE ID=:userID_IN";
         $stm = $this->database_connection->prepare($sql);
         $stm ->bindParam(":userID_IN", $userID);
         $stm ->bindParam(":password_IN", $password);
         $stm ->execute();
     
-            if( !$stm->rowCount() < 1) {
-                return "Ingen användare med ID = $userID hittades!";
+        if($stm ->execute()){
+            echo "User-ID: $userID <br> Nytt lösenord: " . $password . "<br>";
+            die();
+         }
+            if( !$stm->rowCount() < 1){
+                echo "Lösenordet kunde inte bytas - testa igen!";
             }
-        }
-
-    function UpdateEmail($userID, $email){
-        $sql = "UPDATE users SET Email=:username_IN WHERE ID=:userID_IN";
-        $stm = $this->database_connection->prepare($sql);
-        $stm ->bindParam(":userID_IN", $userID);
-        $stm ->bindParam(":email_IN", $email);
-        $stm ->execute();
-
-        if( !$stm->rowCount() < 1) {
-            return "Ingen användare med ID = $userID hittades!";
-        }
-     }
 
     function UpdateRole($userID, $role){
         $sql = "UPDATE users SET Role=:role_IN WHERE ID=:userID_IN";
@@ -178,15 +186,15 @@ class User {
         $stm ->bindParam(":role_IN", $role);
         $stm ->execute();
 
+        echo "Ny roll: " . $role . "<br>";
+
+
         if( !$stm->rowCount() < 1){
-            return "Ingen användare med ID=$userID hittades!";
+            echo "Ingen användare med ID=$userID hittades!";
         }
      }
     
     function LoginUser($username, $password){
-
-
-        //---------------- Alternativ 1 ------------------
 
         $sql = "SELECT ID, Username, Email FROM users WHERE username=:username_IN AND Password=:password_IN";
         $stm = $this->database_connection->prepare( $sql );
@@ -205,27 +213,11 @@ class User {
             . "<br>Email: " . $row['Email']; 
             //row['']innanför brackets samma som column-namn
             }
-
-
-
-
-
-        //---------------- Alternativ 2 ------------------
-
-            // $stm = $pdo->query('SELECT ID, Username, Email FROM users');
-
-            // while ($row = $stm->fetch()) {
-            //     echo "Toppen du är inloggad! <br>" 
-            // . "User-ID :" . $row['ID'] 
-            // . "<br>Username: " . $row['Username']
-            // . "<br>Email: " . $row['Email'];   
-            // }
-
-            
         }
     
     // function CreateNewToken(){}
 
     }
+}
 
 ?>

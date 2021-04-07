@@ -3,8 +3,8 @@
 include("../db.php");
 include("productClass.php");
 
-// Bytt efter title=, description= och price= i URLen för att skapa en produkt: 
-// localhost/API-1/Products/createProduct.php?title=Prada&description=shoes&price=5000kr
+// Lägg till userid och bytt efter title=, description= och price= i URLen för att skapa en produkt: 
+// localhost/API-1/Products/createProduct.php?userid=1&title=Prada&description=shoes&price=5000
 
 if( empty($_GET['userid']) ){ //stor bokstav som i tabell eller när man skriver i URL??
     $error = "En produkt behöver en user ID!";

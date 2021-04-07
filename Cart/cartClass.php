@@ -12,7 +12,7 @@ class Cart {
     }
 
     function CreateCart ($userID, $productID){//Behövs userid?
-        $sql = ('INSERT INTO carts (userID, productID) VALUES(:userid_IN,:productid_IN)');
+        $sql = ('INSERT INTO cart (userID, productID) VALUES(:userid_IN,:productid_IN)');
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam(':userid_IN', $userID); //länkar userID
         $stm->bindParam(':productid_IN', $productID); //länkar productID   
@@ -24,8 +24,8 @@ class Cart {
         }
     }
 
-    function removeFromCart($userID, $productID){
-        $stm = $pdo->prepare('DELETE FROM carts (userID, productID) VALUES(:userId_IN,:productId_IN');
+    function RemoveFromCart($userID, $productID){
+        $stm = $pdo->prepare('DELETE FROM cart (userID, productID) VALUES(:userId_IN,:productId_IN');
         $stm->bindParam(':userId_IN', $_GET['userid']); //länkar userID
         $stm->bindParam(':productId_IN', $_GET['productid']); //länkar productID   
         
@@ -37,10 +37,10 @@ class Cart {
         }
 
 
-
     function Checkout (){
-        $sql = "SELECT * FROM carts";
+        $sql = "SELECT * FROM cart WHERE userID=:userid_IN";
         $stm = $this->database_connection->prepare($sql);
+        $stm->bindParam(':userid_IN', $_GET['userid']); //länkar userID och vilka produkter som ligger på den
         $stm->execute();
         echo '<pre>';
         print_r ($stm->fetchAll()); // json_encode

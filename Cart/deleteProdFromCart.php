@@ -1,12 +1,14 @@
 <?php
+//Ändra numret efter cartid för att ange 
+// http://localhost/API-1/Cart/checkout.php?cartid=1
 
 include("../db.php");
 include("cartClass.php");
 
-if( empty($_GET['id']) ){
+if( empty($_GET['userid']) ){
     echo "Specificera ett ID!";
     die();
 }
 
-$product = new Product( $pdo );
-echo $product->DeleteProduct($_GET['id']); //ID eller id???
+$cart = new Product( $pdo );
+echo $cart->RemoveFromCart($_GET['userid']); //det man skriver in i URL-fältet
