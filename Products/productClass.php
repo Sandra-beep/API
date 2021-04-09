@@ -7,6 +7,7 @@ class Product {
     private $title;
     private $description;
     private $price;
+    
 
     function __construct ($pdo){
         $this->database_connection = $pdo;
@@ -22,8 +23,13 @@ class Product {
         $stm-> bindParam( ":price_IN", $price );
         $stm-> bindParam( ":userid_IN", $userID );
 
+         //Checkar om det finns en användare registrera, genom att räkna raderna/användarna i tabellen i databasen
+        $rows = $stm->rowCount();
+        if( $rows > 0 ){
+        echo "Produkt är redan registrerad - försök med ny info!";
+        die();
+    }
 
-        // $message = new stdClass();//behöver inte meddelande class
 
         if( $stm->execute() ){
             echo "<h2>Produkten skapades! <br> </h2> Produkt-ID: " . $this->database_connection->lastInsertId() . "<br>";
@@ -64,11 +70,13 @@ class Product {
 
         if($stm->execute()){
             echo "Produkten med Produkt-ID $productID är borttagen!";
+        } else {
+            echo "Hittade inget - redan borttaget?";
         }
     }
 
-
-    function UpdateProduct($productID, $title="", $description="", $price=""){
+    //="*" *det som ska läggas till nytt i URLen
+    function EditProduct($userID, $productID, $title="", $description="", $price=""){
 
         // Om de är inte tomma så visar befintlig information
         if( !empty( $title ) ){
@@ -85,30 +93,32 @@ class Product {
     }
 
     // Uppdaterar produktens titel
-    private function updateTitle( $productID, $title ){
-        $sql = "UPDATE products SET Title=:title_IN WHERE ID=:id_IN";
-        $stm = $this->database_connection->prepare( $sql );
-        $stm->bindParam( ":id_IN", $productID) ;
+        function UpdateTitle( $userID, $productID, $title ){
+        $sql = "UPDATE products SET Title=:title_IN WHERE ID=:id_IN AND userID=:userid_IN";
+        $stm = $this->database_connection->prepare($sql);
+        $stm->bindParam( ":id_IN", $productID);
+        $stm->bindParam( ":userid_IN", $userID);
         $stm->bindParam( ":title_IN", $title );
+        
         if($stm ->execute()){
             echo "Produkt-ID: $productID <br> 
-            Ny produkttitel: " . $title . "<br>";
+            Ny titel: " . $title . "<br>";
             die();
          }
-            if( !$stm->rowCount() < 1){
-                echo "Ingen produkt med Product-ID = $productID hittades!";
-            }
+        
+         if( !$stm->rowCount() < 1){
+            echo "Ingen produkt med ID = $productID hittades!";
+         }
 
         }
     
-
     // Uppdaterar produktens beskrivning
-    private function updateDescription( $productID, $description ){
+        function UpdateDescription( $productID, $description ){
         $sql = "UPDATE products SET Description=:description_IN WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam( ":id_IN", $productID) ;
         $stm->bindParam( ":description_IN", $description );
-        if($stm ->execute()){
+        if($stm->execute()){
             echo "Produkt-ID: $productID <br> 
             Ny produktbeskrivning: " . $description . "<br>";
             die();
@@ -119,7 +129,7 @@ class Product {
     }
 
     // Uppdaterar produktens pris
-    private function updatePrice( $productID, $price ){
+        function UpdatePrice( $productID, $price ){
         $sql = "UPDATE products SET Price=:price_IN WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam( ":id_IN", $productID) ;
@@ -136,7 +146,7 @@ class Product {
     
 
     // Leta efter en produkt
-    function SearchProduct ( $word ){ //är word definerad, eller blir det när man skriver i URL?
+        function SearchProduct ( $word ){ //är word definerad, eller blir det när man skriver i URL?
         $sql = "SELECT * FROM products WHERE Title LIKE :word_IN OR Description LIKE :word_IN";
         $stm = $this->database_connection->prepare( $sql );
         $word = '%' . $word . '%';

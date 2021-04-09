@@ -3,6 +3,7 @@
 include("../db.php");
 include("productClass.php");
 
+// Om du inte skrivit "word" i URL-fältet så körs echo
 if( empty($_GET['word']) ){ //vart kommer word ifrån?
     echo "Inget sökord är skriven";
     die();

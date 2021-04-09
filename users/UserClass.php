@@ -32,10 +32,11 @@ class User {
                 die();
             }
         //Checkar om det finns en användare registrera, genom att räkna raderna/användarna i tabellen i databasen
-        $rows = $stm->rowCount();
+            $rows = $stm->rowCount();
             if( $rows > 0 ){
                 echo "Användare är redan registrerad - försök med ny info!";
                 die();
+    
             } //Om den inte är registrerad så läggs den till i tabellen users
 
                 $sql = "INSERT INTO users (Username, Email, Password, Role) VALUES(:username_IN, :email_IN, :password_IN, 'user')";
@@ -139,12 +140,14 @@ class User {
         $stm ->bindParam(":username_IN", $username);
 
          if($stm ->execute()){
-            echo "User-ID: $userID <br> Ny username: " . $username . "<br>";
+            echo "User-ID: $userID <br> 
+            Ny username: " . $username . "<br>";
             die();
          }
-            if( !$stm->rowCount() < 1){
-                echo "Ingen användare med ID = $userID hittades!";
-            }
+        
+         if( !$stm->rowCount() < 1){
+            echo "Ingen användare med ID = $userID hittades!";
+         }
 
         }
 
@@ -158,7 +161,8 @@ class User {
             echo "User-ID: $userID <br> Ny email: " . $email . "<br>";
             die();
          }
-            if( !$stm->rowCount() < 1){
+        
+         if( !$stm->rowCount() < 1){
                 echo "Ingen användare med ID = $userID hittades!";
             }
 

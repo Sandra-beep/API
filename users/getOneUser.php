@@ -16,6 +16,6 @@ if( !empty($_GET['userid']) ){
     echo "</pre>";
 
 }else{
-    echo "Inget ID är specificerat!";
+    echo "Ingen User-ID är specificerad!";
     die();
 }

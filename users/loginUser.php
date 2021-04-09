@@ -6,7 +6,6 @@
 include("../db.php");
 include("UserClass.php");
 
-
 $username = $_GET ['username'];
 $password = $_GET ['password'];
 

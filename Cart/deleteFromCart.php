@@ -1,10 +1,9 @@
 <?php
 //Ändra/välj siffran efter userid= för att ta bort den användare som den tillhör
-//localhost/API-1/Products/deleteProduct.php?userid=3&productid=12
+// localhost/API-1/Cart/deleteFromCart.php?userid=1&productid=1
 
     include("../db.php");
-    include("productClass.php");
-
+    include("cartClass.php");
     
     if( empty($_GET['userid']) ){ 
         echo "Ange User-ID!";
@@ -16,10 +15,7 @@
         die();
     }
 
-    $product = new Product($pdo);
-
-        if(!empty($_GET['productid']) ){
-            $product->DeleteProduct($_GET['productid']);
-        }
+    $cart = new Cart($pdo);
+    echo $cart->DeleteFromCart($_GET['productid']); //[]vilken get det kommer påverka
 
 ?>

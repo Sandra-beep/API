@@ -1,22 +1,29 @@
 <?php
 
 //Byt produktid-nr och title i URL fältet så det kan ändra:
-//localhost/API-1/Products/editProduct.php?productid=1&title=Armani    include("../db.php");
+// localhost/API-1/Products/editProduct.php?productid=1&title=Armani
+    include("../db.php");
     include("productClass.php");
 
     // Lämnas tomma så att användare kan ändra
+
+    
+    $userID = ""; //Om det är fördefinerat, är det ett måste då?
     $productID = "";
     $title = "";
     $description = "";
     $price = "";
-    
 
-    // Om users ID är satt så går den vidare och ändrar resten?
+    if(isset($_GET['userid'])){
+        $userID = $_GET['userid'];
+    }else {
+        echo "Ange User-ID!<br>";
+    }
+
     if(isset($_GET['productid'])){
         $productID = $_GET['productid'];
     }else {
         echo "Ange Produkt-ID!";
-        die();
     }
 
     if(isset($_GET['title'])){
@@ -32,6 +39,6 @@
     }
     
     $productData = new Product($pdo);
-    print_r($productData->editProduct($productID, $title, $description, $price));
+    print_r($productData->EditProduct($userID, $productID, $title, $description, $price));
 
 ?>

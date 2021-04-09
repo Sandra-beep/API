@@ -1,7 +1,8 @@
 <?php
 
 //Skriv i URL fältet så att jag kan ändra:
-//http://localhost/API-1/Users/editUser.php?userid=1&username=Sandrita
+// localhost/API-1/Users/editUser.php?userid=1&username=Sandrita
+
     include("../db.php");
     include("UserClass.php");
 
@@ -16,12 +17,15 @@
     if(isset($_GET['userid'])){
         $userID = $_GET['userid'];
     }else {
-        echo "Du har ej angett (rätt) User-ID!";
+        echo "Ange User-ID!";
     }
 
     if(isset($_GET['username'])){
         $username = $_GET['username'];
     }
+    // else { // Man behöver skriv till detta!
+    //     echo "Ange tex username! <br>";
+    // }
 
     if(isset($_GET['email'])){
         $email = $_GET['email'];

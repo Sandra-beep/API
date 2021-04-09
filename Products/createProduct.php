@@ -7,30 +7,26 @@ include("productClass.php");
 // localhost/API-1/Products/createProduct.php?userid=1&title=Prada&description=shoes&price=5000
 
 if( empty($_GET['userid']) ){ //stor bokstav som i tabell eller när man skriver i URL??
-    $error = "En produkt behöver en user ID!";
-    print_r($error); //vrf json_encode? för att ta bort extra array-delen. Funkar print_r? Räcker med echo? JA och JA
+    echo "En produkt behöver en user ID!";
     die();
 }
 
 // Om titeln är tom så visar den error meddelande
 if( empty($_GET['title']) ){ //stor bokstav som i tabell eller när man skriver i URL??
-    $error = "En produkt behöver en titel!";
-    print_r($error); //vrf json_encode? för att ta bort extra array-delen. Funkar print_r? Räcker med echo? JA och JA
+    echo "En produkt behöver en titel!";
     die();
 }
 // Om beskrivningen är tom så visar den error meddelande
 if( empty($_GET['description']) ){
-    $error = "En produkt behöver en beskrivning!";
-    print_r($error);
+    echo "En produkt behöver en beskrivning!";
     die();
 }
 // Om priset är tom så visar den error meddelande
 if( empty($_GET['price']) ){
-    $error = "En produkt behöver ett prisförslag!";
-    print_r($error);
+    echo "En produkt behöver ett prisförslag!";
     die();
 }
 
-// Lägger till en ny produkt, genom att lägga till i tabellen?
+// Lägger till en ny produkt i products-tabellen i databasen
 $product = new Product($pdo);
 $product->CreateProduct($_GET['userid'], $_GET['title'], $_GET['description'], $_GET['price']); 
