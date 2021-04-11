@@ -6,9 +6,8 @@
     include("productClass.php");
 
     // Lämnas tomma så att användare kan ändra
-
-    
-    $userID = ""; //Om det är fördefinerat, är det ett måste då?
+    // $userID = 1; //Om det är fördefinerat, är det ett måste då?
+    $userID = ""; 
     $productID = "";
     $title = "";
     $description = "";
@@ -27,18 +26,18 @@
     }
 
     if(isset($_GET['title'])){
-        $username = $_GET['title'];
+        $title = $_GET['title'];
     }
 
     if(isset($_GET['description'])){
-        $email = $_GET['description'];
+        $description = $_GET['description'];
     }
     
     if(isset($_GET['price'])){
-        $password = $_GET['price'];
+        $price = $_GET['price'];
     }
     
     $productData = new Product($pdo);
-    print_r($productData->EditProduct($userID, $productID, $title, $description, $price));
+    $productData->EditProduct($userID, $productID, $title, $description, $price);
 
 ?>

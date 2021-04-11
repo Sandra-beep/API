@@ -28,7 +28,7 @@ class Product {
         if( $rows > 0 ){
         echo "Produkt är redan registrerad - försök med ny info!";
         die();
-    }
+     }
 
 
         if( $stm->execute() ){
@@ -40,7 +40,6 @@ class Product {
     
     }
 
-
     function GetAllProducts(){
         $sql = "SELECT * FROM products";
         $stm = $this->database_connection->prepare($sql);
@@ -49,7 +48,6 @@ class Product {
         print_r ($stm->fetchAll()); //hoppar över json_encode
         echo '</pre>';
     }
-
     
     function GetOneProduct($productID){
         $sql = "SELECT * FROM products WHERE ID=:id_IN";
@@ -88,16 +86,15 @@ class Product {
         }
 
         if( !empty( $price ) ){
-            echo $this->UpdateDescription( $productID, $price );
+            echo $this->UpdatePrice( $productID, $price );
         }
     }
 
     // Uppdaterar produktens titel
-        function UpdateTitle( $userID, $productID, $title ){
-        $sql = "UPDATE products SET Title=:title_IN WHERE ID=:id_IN AND userID=:userid_IN";
+        function UpdateTitle( $productID, $title ){
+        $sql = "UPDATE products SET Title=:title_IN WHERE ID=:id_IN";
         $stm = $this->database_connection->prepare($sql);
         $stm->bindParam( ":id_IN", $productID);
-        $stm->bindParam( ":userid_IN", $userID);
         $stm->bindParam( ":title_IN", $title );
         
         if($stm ->execute()){

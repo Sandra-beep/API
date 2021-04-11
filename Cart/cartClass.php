@@ -41,7 +41,7 @@ class Cart {
     function Checkout ($userid){//det man måste skriva i URL
 
         $sql = "SELECT productID, Title, Price, 
-        COUNT(productID) as Amount 
+        COUNT(productID) as Quantity 
         FROM cart c 
         JOIN products p ON c.productID = p.ID 
         WHERE c.userID=:userid_IN 
