@@ -19,10 +19,10 @@ class Cart {
         
         //Om man lyckades:
         if($stm->execute()){
-            echo "Du lyckades lägga in en vara! <br>
+            echo "Du lyckades lägga till produkten med Produkt-ID $productID ! <br>
             Kika i varukorgen/checkout!";
         } else { //om man inte lyckades:
-            echo "Gick inte skapa en ny produkt - försök igen!";
+            echo "Gick inte att lägga till produkt - försök igen!";
         }
     }
 

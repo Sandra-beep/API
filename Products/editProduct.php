@@ -1,9 +1,11 @@
 <?php
 
-//Byt produktid-nr och title i URL fältet så det kan ändra:
-// localhost/API-1/Products/editProduct.php?productid=1&title=Armani
-    include("../db.php");
-    include("productClass.php");
+//Byt userid-nr och produktid-nr och title i URL fältet så det kan ändra:
+//localhost/API-1/Products/editProduct.php?userid=1&productid=1&title=Armani
+    
+
+include("../db.php");
+include("productClass.php");
 
     // Lämnas tomma så att användare kan ändra
     $userID = ""; 
@@ -16,12 +18,14 @@
         $userID = $_GET['userid'];
     }else {
         echo "Ange User-ID!<br>";
+        die();
     }
 
     if(isset($_GET['productid'])){
         $productID = $_GET['productid'];
     }else {
         echo "Ange Produkt-ID!";
+        die();
     }
 
     if(isset($_GET['title'])){

@@ -12,10 +12,10 @@ if( !empty($_GET['userid']) ){
     $userID = new User($pdo);
     $userData = $userID->GetOneUser($_GET['userid']);
     echo "<pre>";
-    print_r (array_unique($userData));
+    print_r($userData);
     echo "</pre>";
 
 }else{
-    echo "Ingen User-ID är specificerad!";
+    echo "Ange User-ID!";
     die();
 }

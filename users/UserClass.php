@@ -39,29 +39,30 @@ class User {
     
             } //Om den inte är registrerad så läggs den till i tabellen users
 
-                $sql = "INSERT INTO users (Username, Email, Password, Role) VALUES(:username_IN, :email_IN, :password_IN, 'user')";
-                $stm = $this->database_connection->prepare($sql);
-                $stm-> bindParam(":username_IN", $username);
-                $stm-> bindParam(":email_IN", $email);
-                $stm-> bindParam(":password_IN", $password);
+            $sql = "INSERT INTO users (Username, Email, Password, Role) VALUES(:username_IN, :email_IN, :password_IN, 'user')";
+            $stm = $this->database_connection->prepare($sql);
+            $stm-> bindParam(":username_IN", $username);
+            $stm-> bindParam(":email_IN", $email);
+            $stm-> bindParam(":password_IN", $password);
 
-                // Om man inte lyckas lägga in användare rätt så visas echot
-                if( !$stm->execute() ){
-                    echo "Kunde inte registrera användare!";
-                    die();
-                }
+            if($stm->execute() ){
+                echo "<pre>";
+                "Användarnamn: $username <br> " . "Email: $email";
+                echo"<pre>";
+            }
+            
 
-            $this->username = $username;
-            $this->email = $email;
+            // Om man inte lyckas lägga in användare rätt så visas echot
+            if( !$stm->execute() ){
+                echo "Kunde inte registrera användare!";
+                die();
+            }
 
-            echo "<pre>";
-            "Användarnamn: $this->username <br> " . "Email: $this->email";
-            echo"<pre>";
-
-        } else {
-            echo "Antingen username, email eller password behöver ett värde!";
-            die();
-        }
+            
+            } else {
+                echo "Antingen username, email eller/och password behöver ett värde!";
+                die();
+            }
      }
 
     function GetAllUsers(){
@@ -182,6 +183,7 @@ class User {
             if( !$stm->rowCount() < 1){
                 echo "Lösenordet kunde inte bytas - testa igen!";
             }
+    }
 
     function UpdateRole($userID, $role){
         $sql = "UPDATE users SET Role=:role_IN WHERE ID=:userID_IN";
@@ -204,9 +206,8 @@ class User {
         $stm = $this->database_connection->prepare( $sql );
         $stm->bindParam(":username_IN", $username);
         $stm->bindParam(":password_IN", $password);
-        $return = $stm->execute();
+        $stm->execute();
 
-        print_r ($return);
         $row = $stm->fetch();
 
         //Om rätt skrivet, så visas 1 true och är 0 false
@@ -217,11 +218,20 @@ class User {
             . "<br>Email: " . $row['Email']; 
             //row['']innanför brackets samma som column-namn
             }
+
         }
-    
-    // function CreateNewToken(){}
+
+        function CreateNewToken(){
+            echo time();
+            }
+
+
+
+
+
+
+
 
     }
-}
 
 ?>

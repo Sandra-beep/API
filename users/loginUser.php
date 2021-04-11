@@ -6,12 +6,16 @@
 include("../db.php");
 include("UserClass.php");
 
-$username = $_GET ['username'];
-$password = $_GET ['password'];
+// Om username till användaren är tom så kör den echo
+if (empty($_GET['username'])){
+    echo "Ange användarnamn!";
+    die();
+} 
 
-// Kryptering av lösenord:
-// $salt = "hejåhå235246369()/=/r6**";
-// $password = md5($password.$salt);
+if (empty($_GET['password'])){
+    echo "Ange lösenord!";
+    die();
+}
 
-$userID = new User($pdo);
-print_r($userID->LoginUser($username, $password));
+$userLogin = new User($pdo);
+$userLogin->LoginUser($_GET['username'], $_GET['password']);

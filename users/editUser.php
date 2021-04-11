@@ -6,7 +6,7 @@
     include("../db.php");
     include("UserClass.php");
 
-    // Lämnas tomma så att användare kan ändra
+    // Lämnas tomma så att användare kan lägga till
     $userID = "";
     $username = "";
     $email = "";
@@ -25,6 +25,7 @@
     }
     // else { // Man behöver skriv till detta!
     //     echo "Ange tex username! <br>";
+    //     die();
     // }
 
     if(isset($_GET['email'])){
