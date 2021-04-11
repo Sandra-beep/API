@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Värd: localhost
--- Tid vid skapande: 11 apr 2021 kl 23:26
+-- Tid vid skapande: 11 apr 2021 kl 23:50
 -- Serverversion: 10.4.17-MariaDB
 -- PHP-version: 8.0.1
 
@@ -45,17 +45,6 @@ INSERT INTO `cart` (`ID`, `userID`, `productID`) VALUES
 (22, 1, 6),
 (23, 1, 6),
 (24, 1, 6);
-
--- --------------------------------------------------------
-
---
--- Tabellstruktur `orders`
---
-
-CREATE TABLE `orders` (
-  `ID` int(11) NOT NULL,
-  `cartID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -139,12 +128,6 @@ ALTER TABLE `cart`
   ADD KEY `productID` (`productID`);
 
 --
--- Index för tabell `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`ID`);
-
---
 -- Index för tabell `products`
 --
 ALTER TABLE `products`
@@ -173,12 +156,6 @@ ALTER TABLE `users`
 --
 ALTER TABLE `cart`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
-
---
--- AUTO_INCREMENT för tabell `orders`
---
-ALTER TABLE `orders`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT för tabell `products`
