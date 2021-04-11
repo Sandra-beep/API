@@ -132,7 +132,7 @@ class User {
         //     echo $this->UpdateRole($userID, $role);
         //     }
         // }
-    }
+     }
 
     function UpdateUsername( $userID, $username ){
         $sql = "UPDATE users SET Username=:username_IN WHERE ID=:userID_IN";
@@ -183,8 +183,7 @@ class User {
             if( !$stm->rowCount() < 1){
                 echo "Lösenordet kunde inte bytas - testa igen!";
             }
-    }
-
+     }
     function UpdateRole($userID, $role){
         $sql = "UPDATE users SET Role=:role_IN WHERE ID=:userID_IN";
         $stm = $this->database_connection->prepare($sql);
@@ -212,21 +211,95 @@ class User {
 
         //Om rätt skrivet, så visas 1 true och är 0 false
         if($row[0] > 0){
-            echo "Toppen du är inloggad! <br>" 
-            . "User-ID :" . $row['ID'] 
+            echo "Toppen du är inloggad! <br><br>" 
+            . "User-ID: " . $row['ID'] 
             . "<br>Username: " . $row['Username']
-            . "<br>Email: " . $row['Email']; 
-            //row['']innanför brackets samma som column-namn
+            . "<br>Email: " . $row['Email'] . "<br>";
+             //row['']innanför brackets samma som column-namn
+            
+            return $this->CreateNewToken($row['ID'], $row['Username']);
+           
             }
 
         }
 
-        function CreateNewToken(){
-            echo time();
+        function CreateNewToken($userID, $username){
+            echo "Token: " . time();
+
+            $check_token = $this->CheckToken($userID);
+
+            if ( $check_token != false ){
+                return $check_token;
+            }
+
+            $token = md5(time() . $userID . $username);
+
+            $sql = "INSERT INTO sessions (userID, Token, Last_used) VALUES (:userid_IN, :token_IN, :lastused_IN)";
+            $stm = $this->database_connection->prepare( $sql );
+            $stm->bindParam(":userid_IN", $userID);
+            $stm->bindParam(":token_IN", $token);
+            
+            $time = time();
+            
+            $stm-> bindParam(":lastused_IN", $time);
+            $stm-> execute();
+            
+            return $token;
+
+            }
+
+            function CheckToken($userID){
+                $sql = "SELECT Token, Last_used FROM sessions WHERE userID=:userid_IN and Last_used > :activetime_IN LIMIT 1";
+                $stm = $this->database_connection->prepare( $sql );
+                $stm-> bindParam(":userid_IN", $userID);
+                $active_time = time() - (60*60);
+
+                $stm-> bindParam(":activetime_IN", $active_time);
+
+                $stm->execute();
+
+                $return = $stm->fetch();
+
+                if(isset($return['Token'])){
+                    return $return['Token'];
+                } else {
+                    return false;
+                }
+                
             }
 
 
+            function ValidateToken($token){
+                $sql= "SELECT Token, Last_used FROM sessions WHERE Token=:token_IN and Last_used > :activetime_IN LIMIT 1";
+                $stm = $this->database_connection->prepare( $sql );
+                $stm-> bindParam( ":token_IN", $token );
+                
+                $active_time = time() - (60*60);
 
+                $stm->execute();
+
+                $return = $stm-> fetch();
+
+                if(isset($return['Token'])){
+                    $this->UpdateToken($return['Token']);
+                    return true;
+                } else {
+                    return false;
+                }
+
+
+            function UpdateToken ($token) {
+                $sql= "UPDATE sessions SET Last_used=:lastused_IN WHERE Token=:token_IN";
+                $stm = $this->database_connection->prepare( $sql );
+                $time = time();
+                $stm-> bindParam( ":token_IN", $token );
+                $stm-> bindParam( ":lastused_IN", $time );
+                $stm-> execute();
+
+
+            }
+
+        }
 
 
 
