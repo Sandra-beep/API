@@ -6,7 +6,6 @@
     include("productClass.php");
 
     // Lämnas tomma så att användare kan ändra
-    // $userID = 1; //Om det är fördefinerat, är det ett måste då?
     $userID = ""; 
     $productID = "";
     $title = "";
