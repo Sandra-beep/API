@@ -232,7 +232,7 @@ class User {
                 return $check_token;
             }
 
-            $token = md5(time() . $userID . $username);
+            $token = md5(time() . $userID . $username); //kryptering!
 
             $sql = "INSERT INTO sessions (userID, Token, Last_used) VALUES (:userid_IN, :token_IN, :lastused_IN)";
             $stm = $this->database_connection->prepare( $sql );
@@ -265,7 +265,7 @@ class User {
                 } else {
                     return false;
                 }
-                
+
             }
 
 

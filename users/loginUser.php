@@ -18,4 +18,5 @@ if (empty($_GET['password'])){
 }
 
 $userLogin = new User($pdo);
-$userLogin->LoginUser($_GET['username'], $_GET['password']);
+$token = $userLogin->LoginUser($_GET['username'], $_GET['password']);
+print_r($token);
